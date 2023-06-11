@@ -1,8 +1,19 @@
 <?php
-$db_host = "localhost";
-$db_name = "EventManagementDB";
-$db_user = "root";
-$db_password = "";
+class DBConnect
+{
+    private $server = 'localhost';
+    private $dbname = "EventManagementDB";
+    private $user = 'root';
+    private $pass = '';
 
-$conn = new PDO("mysql:host=$db_host;dbname=$db_name", $db_user, $db_password);
-$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    public function connect()
+    {
+        try {
+            $conn = new PDO('mysql:host=' . $this->server . ';dbname=' . $this->dbname, $this->user, $this->pass);
+            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            return $conn;
+        } catch (\Exception $error) {
+            echo "Database Error: " . $error->getMessage();
+        }
+    }
+}
