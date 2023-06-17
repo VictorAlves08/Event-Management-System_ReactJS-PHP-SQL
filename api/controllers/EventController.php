@@ -15,6 +15,11 @@ class EventController
         echo json_encode($this->event->getAllEvents());
     }
 
+    public function getEvent($id_event)
+    {
+        echo json_encode($this->event->getEvent($id_event));
+    }
+
     public function createEvent()
     {
         $data = json_decode(file_get_contents('php://input'), true);
@@ -26,6 +31,7 @@ class EventController
         $this->event->setLocation($data['location']);
         $this->event->setPrice($data['price']);
         $this->event->setImageUrl($data['image_url']);
+        $this->event->setIDUser($data['id_user']);
 
         $result = $this->event->postCreateEvent();
 

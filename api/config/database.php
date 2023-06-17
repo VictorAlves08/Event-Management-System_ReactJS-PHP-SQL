@@ -2,7 +2,7 @@
 class DBConnect
 {
     private $server = 'localhost';
-    private $dbname = "EventManagementDB";
+    private $dbname = "eventmanagementdb";
     private $user = 'root';
     private $pass = '';
 

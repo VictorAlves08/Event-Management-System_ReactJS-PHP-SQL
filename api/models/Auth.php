@@ -1,23 +1,60 @@
 <?php
+require_once('config/database.php');
 
-class Auth {
-    private $user;
-    private $loggedIn;
+class Auth
+{
 
-    public function __construct($user, $loggedIn) {
-        $this->user = $user;
-        $this->loggedIn = $loggedIn;
+    private $objDB;
+    private $conn;
+
+    private $name;
+    private $email;
+    private $password;
+
+    public function __construct()
+    {
+        $this->objDB = new DBConnect();
+        $this->conn = $this->objDB->connect();
     }
 
-    public function getUser() {
-        return $this->user;
+    public function getUserName()
+    {
+        return $this->name;
     }
 
-    public function getLoggedIn() {
-        return $this->loggedIn;
+    public function setUserName($name)
+    {
+        $this->name = $name;
     }
 
-    public function setLoggedIn($loggedIn) {
-        $this->loggedIn = $loggedIn;    
+    public function getUserEmail()
+    {
+        return $this->email;
+    }
+
+    public function setUserEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    public function getUserPassword()
+    {
+        return $this->password;
+    }
+
+    public function setUserPassword($password)
+    {
+        $this->password = $password;
+    }
+
+    public function Login()
+    {
+        $query = "SELECT * FROM users WHERE email = :email AND password = :password";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':password', $password);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

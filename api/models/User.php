@@ -1,57 +1,98 @@
 <?php
+require_once('config/database.php');
 
 class User
 {
+
+  private $objDB;
+  private $conn;
+
+  private $id_user;
   private $name;
   private $email;
   private $password;
-  private $userType;
 
-  public function __construct($name, $email, $password, $userType)
+  public function __construct()
   {
-    $this->name = $name;
-    $this->email = $email;
-    $this->password = $password;
-    $this->userType = $userType;
+    $this->objDB = new DBConnect();
+    $this->conn = $this->objDB->connect();
   }
 
-  public function getName()
+  public function getIDUser()
+  {
+    return $this->id_user;
+  }
+
+  public function setIDUser($id_user)
+  {
+    $this->id_user = $id_user;
+  }
+
+  public function getUserName()
   {
     return $this->name;
   }
 
-  public function setName($name)
+  public function setUserName($name)
   {
     $this->name = $name;
   }
 
-  public function getEmail()
+  public function getUserEmail()
   {
     return $this->email;
   }
 
-  public function setEmail($email)
+  public function setUserEmail($email)
   {
     $this->email = $email;
   }
 
-  public function getPassword()
+  public function getUserPassword()
   {
     return $this->password;
   }
 
-  public function setPassword($password)
+  public function setUserPassword($password)
   {
     $this->password = $password;
   }
 
-  public function getUserType()
+
+  public function getUser($id_user)
   {
-    return $this->userType;
+    $query = "SELECT * FROM users WHERE id_user = :id_user
+                JOIN registrations ON user.id_user = registrations.id_user
+                JOIN events ON registrations.id_event = events.id_event";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':id_user', $id_user);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
   }
 
-  public function setUserType($userType)
+  public function postUserCreate()
   {
-    $this->userType = $userType;
+    $query = "INSERT INTO users (name, email, password) VALUES (:name, :email, :password)";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':name', $this->name);
+    $stmt->bindParam(':email', $this->email);
+    $stmt->bindParam(':password', $this->password);
+    $success = $stmt->execute();
+
+    return $success ? true : false;
+  }
+
+  public function putUserEdit()
+  {
+    $query = "UPDATE users SET name = :name, email = :email, password = :password WHERE id_user = :id_user";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':id_user', $this->id_user);
+    $stmt->bindParam(':name', $this->name);
+    $stmt->bindParam(':email', $this->email);
+    $stmt->bindParam(':password', $this->password);
+    $success = $stmt->execute();
+
+    return $success ? true : false;
   }
 }

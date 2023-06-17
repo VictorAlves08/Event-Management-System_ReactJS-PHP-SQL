@@ -13,6 +13,7 @@ class Event
     private $category;
     private $price;
     private $image_url;
+    private $id_user;
 
     public function __construct()
     {
@@ -90,13 +91,42 @@ class Event
         $this->image_url = $image_url;
     }
 
+    public function getIDUser()
+    {
+        return $this->id_user;
+    }
+
+    public function setIDUser($id_user)
+    {
+        $this->id_user = $id_user;
+    }
+
     public function getAllEvents()
     {
-        $query = "SELECT * FROM events JOIN categories ON events.fk_id_category = categories.id_category";
+        $query = "SELECT * FROM events 
+                JOIN categories ON events.fk_id_category = categories.id_category
+                JOIN users ON events.fk_id_user = users.id_user
+                JOIN registrations ON events.id_event = registrations.fk_id_event
+                JOIN reviews ON events.id_event = reviews.fk_id_event";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getEvent($id_event)
+    {
+        $query = "SELECT * FROM events 
+                JOIN categories ON events.fk_id_category = categories.id_category
+                JOIN users ON events.fk_id_user = users.id_user
+                JOIN registrations ON events.id_event = registrations.fk_id_event
+                JOIN reviews ON events.id_event = reviews.fk_id_event
+                WHERE id_event = :id_event";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id_event', $id_event);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function postCreateEvent()
@@ -106,10 +136,9 @@ class Event
         $stmt_category->bindParam(':type', $this->category);
         $categorySuccess = $stmt_category->execute();
 
-
         $fk_id_category = $this->conn->lastInsertId();
-        $query_event = "INSERT INTO events (title, description, dateTime, location, fk_id_category, price, image_url) 
-        VALUES (:title, :description, :dateTime, :location, :fk_id_category, :price, :image_url)";
+        $query_event = "INSERT INTO events (title, description, dateTime, location, fk_id_category, price, image_url, fk_id_user) 
+        VALUES (:title, :description, :dateTime, :location, :fk_id_category, :price, :image_url, :fk_id_user)";
         $stmt = $this->conn->prepare($query_event);
         $stmt->bindParam(':title', $this->title);
         $stmt->bindParam(':description', $this->description);
@@ -118,6 +147,7 @@ class Event
         $stmt->bindParam(':fk_id_category', $fk_id_category);
         $stmt->bindParam(':price', $this->price);
         $stmt->bindParam(':image_url', $this->image_url);
+        $stmt->bindParam(':fk_id_user', $this->id_user);
         $eventSuccess = $stmt->execute();
 
         return $categorySuccess && $eventSuccess ? true : false;
@@ -134,14 +164,24 @@ class Event
         $query_event = "DELETE FROM events WHERE id_event = :id_event";
         $stmt_event = $this->conn->prepare($query_event);
         $stmt_event->bindParam(':id_event', $id_event);
-        $stmt_event->execute();
+        $eventSuccess = $stmt_event->execute();
 
         $query_category = "DELETE FROM categories WHERE id_category = :id_category";
         $stmt_category = $this->conn->prepare($query_category);
         $stmt_category->bindParam(":id_category", $category_id);
         $categorySuccess = $stmt_category->execute();
 
-        return $categorySuccess ? true : false;
+        $query_review = "DELETE FROM reviews WHERE fk_id_event = :id_event";
+        $stmt_review = $this->conn->prepare($query_review);
+        $stmt_review->bindParam(":id_event", $id_event);
+        $reviewSuccess = $stmt_review->execute();
+
+        $query_registration = "DELETE FROM registrations WHERE fk_id_event = :id_event";
+        $stmt_registration = $this->conn->prepare($query_registration);
+        $stmt_registration->bindParam(":id_event", $id_event);
+        $registrationSuccess = $stmt_registration->execute();
+
+        return $registrationSuccess && $eventSuccess && $categorySuccess && $reviewSuccess ? true : false;
     }
 
     public function putUpdateEvent($id_event)
