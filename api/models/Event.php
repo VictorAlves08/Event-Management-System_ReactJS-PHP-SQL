@@ -120,7 +120,7 @@ class Event
             $users = $usersStmt->fetchAll(PDO::FETCH_ASSOC);
             $event['user'] = $users;
 
-            $reviewsQuery = "SELECT id_review, score, comment
+            $reviewsQuery = "SELECT id_review, score, comment, fk_id_user as id_user
                              FROM reviews
                              WHERE fk_id_event = :event_id";
             $reviewsStmt = $this->conn->prepare($reviewsQuery);
@@ -155,7 +155,7 @@ class Event
             $users = $usersStmt->fetchAll(PDO::FETCH_ASSOC);
             $event['user'] = $users;
 
-            $reviewsQuery = "SELECT id_review, score, comment
+            $reviewsQuery = "SELECT id_review, score, comment, fk_id_user as id_user
                              FROM reviews
                              WHERE fk_id_event = :event_id";
             $reviewsStmt = $this->conn->prepare($reviewsQuery);
