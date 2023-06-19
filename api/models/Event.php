@@ -103,30 +103,69 @@ class Event
 
     public function getAllEvents()
     {
-        $query = "SELECT * FROM events 
-                JOIN categories ON events.fk_id_category = categories.id_category
-                JOIN users ON events.fk_id_user = users.id_user
-                JOIN registrations ON events.id_event = registrations.fk_id_event
-                JOIN reviews ON events.id_event = reviews.fk_id_event";
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
+        $eventsQuery = "SELECT id_event, title, description, dateTime, location, price, image_url FROM events 
+                        JOIN categories ON events.fk_id_category = categories.id_category";
+        $eventsStmt = $this->conn->prepare($eventsQuery);
+        $eventsStmt->execute();
+        $events = $eventsStmt->fetchAll(PDO::FETCH_ASSOC);
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($events as &$event) {
+            $usersQuery = "SELECT users.id_user, users.name, users.email, registrations.id_registration, registrations.type_user, registrations.payment_status 
+                           FROM users
+                           JOIN registrations ON users.id_user = registrations.fk_id_user
+                           WHERE registrations.fk_id_event = :event_id";
+            $usersStmt = $this->conn->prepare($usersQuery);
+            $usersStmt->bindParam(':event_id', $event['id_event']);
+            $usersStmt->execute();
+            $users = $usersStmt->fetchAll(PDO::FETCH_ASSOC);
+            $event['user'] = $users;
+
+            $reviewsQuery = "SELECT id_review, score, comment
+                             FROM reviews
+                             WHERE fk_id_event = :event_id";
+            $reviewsStmt = $this->conn->prepare($reviewsQuery);
+            $reviewsStmt->bindParam(':event_id', $event['id_event']);
+            $reviewsStmt->execute();
+            $reviews = $reviewsStmt->fetchAll(PDO::FETCH_ASSOC);
+            $event['reviews'] = $reviews;
+        }
+
+        return $events;
     }
+
 
     public function getEvent($id_event)
     {
-        $query = "SELECT * FROM events 
-                JOIN categories ON events.fk_id_category = categories.id_category
-                JOIN users ON events.fk_id_user = users.id_user
-                JOIN registrations ON events.id_event = registrations.fk_id_event
-                JOIN reviews ON events.id_event = reviews.fk_id_event
-                WHERE id_event = :id_event";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id_event', $id_event);
-        $stmt->execute();
+        $eventQuery = "SELECT id_event, title, description, dateTime, location, price, image_url FROM events 
+                       JOIN categories ON events.fk_id_category = categories.id_category
+                       WHERE events.id_event = :event_id";
+        $eventStmt = $this->conn->prepare($eventQuery);
+        $eventStmt->bindParam(':event_id', $id_event);
+        $eventStmt->execute();
+        $event = $eventStmt->fetch(PDO::FETCH_ASSOC);
 
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($event) {
+            $usersQuery = "SELECT users.id_user, users.name, users.email, users.password, registrations.id_registration, registrations.type_user, registrations.payment_status 
+                           FROM users
+                           JOIN registrations ON users.id_user = registrations.fk_id_user
+                           WHERE registrations.fk_id_event = :event_id";
+            $usersStmt = $this->conn->prepare($usersQuery);
+            $usersStmt->bindParam(':event_id', $id_event);
+            $usersStmt->execute();
+            $users = $usersStmt->fetchAll(PDO::FETCH_ASSOC);
+            $event['user'] = $users;
+
+            $reviewsQuery = "SELECT id_review, score, comment
+                             FROM reviews
+                             WHERE fk_id_event = :event_id";
+            $reviewsStmt = $this->conn->prepare($reviewsQuery);
+            $reviewsStmt->bindParam(':event_id', $id_event);
+            $reviewsStmt->execute();
+            $reviews = $reviewsStmt->fetchAll(PDO::FETCH_ASSOC);
+            $event['reviews'] = $reviews;
+        }
+
+        return $event;
     }
 
     public function postCreateEvent()
