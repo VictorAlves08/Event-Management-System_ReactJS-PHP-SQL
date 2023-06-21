@@ -1,1 +1,1 @@
-// export { Home } from './Home.jsx';
+export { Slider } from './Slider';

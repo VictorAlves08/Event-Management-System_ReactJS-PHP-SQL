@@ -10,8 +10,8 @@ import {AuthProvider} from './context/auth';
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <GlobalStyles />
+      <AuthProvider>
         <Home />
-      {/* <AuthProvider> */}
-      {/* </AuthProvider> */}
+     </AuthProvider>
   </React.StrictMode>,
 )
