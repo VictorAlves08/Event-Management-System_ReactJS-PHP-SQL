@@ -8,7 +8,8 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 const imageUrls = [
   'https://img.freepik.com/free-psd/event-banner-template-design_23-2149231981.jpg?w=826&t=st=1687323227~exp=1687323827~hmac=aaa493fcaedeb9f2c685d3db7257515f1c61710413f30800451b596d071ac38c',
   'https://img.freepik.com/psd-gratuitas/modelo-de-banner-horizontal-para-evento-de-negocios-profissional_23-2149313272.jpg?w=2000',
-  'https://img.freepik.com/psd-gratuitas/modelo-de-banner-para-concerto_23-2148403186.jpg'
+  'https://img.freepik.com/psd-gratuitas/modelo-de-banner-para-concerto_23-2148403186.jpg',
+  'https://img.freepik.com/free-vector/gradient-texture-music-festival-twitch-banner_23-2149201651.jpg'
 ];
 
 export const Slider = () => {

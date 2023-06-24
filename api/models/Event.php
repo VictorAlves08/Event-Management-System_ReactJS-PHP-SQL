@@ -103,7 +103,7 @@ class Event
 
     public function getAllEvents()
     {
-        $eventsQuery = "SELECT id_event, title, description, dateTime, location, price, image_url FROM events 
+        $eventsQuery = "SELECT id_event, title, description, dateTime, location, price, image_url, type FROM events 
                         JOIN categories ON events.fk_id_category = categories.id_category";
         $eventsStmt = $this->conn->prepare($eventsQuery);
         $eventsStmt->execute();
@@ -136,7 +136,7 @@ class Event
 
     public function getEvent($id_event)
     {
-        $eventQuery = "SELECT id_event, title, description, dateTime, location, price, image_url FROM events 
+        $eventQuery = "SELECT id_event, title, description, dateTime, location, price, image_url, type FROM events 
                        JOIN categories ON events.fk_id_category = categories.id_category
                        WHERE events.id_event = :event_id";
         $eventStmt = $this->conn->prepare($eventQuery);
