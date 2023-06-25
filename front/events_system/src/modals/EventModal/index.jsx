@@ -5,10 +5,14 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import {formatDate, formatStars} from '../../utils/index.js';
 
-export const EventModal = ({onClose, isModalOpen, data}) =>{
-  if(!isModalOpen) return null;
+const organizerType = 'organizer';
+
+export const EventModal = ({onClose, isModalEventOpen, data, handleIsModalCreateEventOpen, isLoggedIn}) =>{
+  if(!isModalEventOpen) return null;
   const date = formatDate(data.dateTime);
   const stars = formatStars(5);
+
+  const userOrganizer = data?.user.find(user => user.type_user === organizerType)
 
   return (
     <Styled.ModalWrapper>
@@ -31,8 +35,8 @@ export const EventModal = ({onClose, isModalOpen, data}) =>{
               </div>
               <div>
                 <Styled.InfoTitle>Responsável</Styled.InfoTitle>
-                <p title={''} >Victor Alves de Oliveira</p>
-                <p title={''} >victor.oliveira@gmail.com</p>
+                <p title={userOrganizer?.name} >{userOrganizer?.name}</p>
+                <p title={userOrganizer?.email} >{userOrganizer?.email}</p>
               </div>
             </div>
 
@@ -48,7 +52,9 @@ export const EventModal = ({onClose, isModalOpen, data}) =>{
                 <p>A partida foi sensacional!</p>
               </div>
               <div className='body-bottom-btns'>
-
+                {isLoggedIn && isLoggedIn?.id_user === data.id_user &&(
+                  <button type="button" onClick={handleIsModalCreateEventOpen}>Editar Evento</button>
+                )}
               </div>
             </div>
 

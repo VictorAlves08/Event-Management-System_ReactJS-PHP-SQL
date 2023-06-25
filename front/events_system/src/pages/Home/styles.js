@@ -28,9 +28,9 @@ export const Header = styled.div`
   div{
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
 
-    width: 13%;
+    width: 20%;
 
     button{
       border: none;
@@ -48,6 +48,23 @@ export const Header = styled.div`
         color: #000;
         border: 1px solid #000;
       }
+    }
+  }
+
+  .userOn{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    width: 100%;
+    white-space: nowrap;
+
+    div{
+      display: flex;
+      align-items: center;
+      flex-direction: row;
+      justify-content: space-around;
+      width: 100%;
     }
   }
 `;

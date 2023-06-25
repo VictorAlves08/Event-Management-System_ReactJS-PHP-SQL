@@ -27,7 +27,7 @@ class UserController
 
     if ($result) {
       http_response_code(200);
-      echo json_encode(array('message' => 'Usuario criado com sucesso'));
+      echo json_encode($result);
     } else {
       http_response_code(500);
       echo json_encode(array('message' => 'Erro ao criar o usuario'));

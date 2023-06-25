@@ -189,7 +189,16 @@ class Event
         $stmt->bindParam(':fk_id_user', $this->id_user);
         $eventSuccess = $stmt->execute();
 
-        return $categorySuccess && $eventSuccess ? true : false;
+        $fk_id_event = $this->conn->lastInsertId();
+        $type_user = 'organizer';
+        $query_registration = "INSERT INTO registrations (fk_id_event, fk_id_user, type_user) VALUES (:id_event, :id_user, :type_user)";
+        $stmt_registration = $this->conn->prepare($query_registration);
+        $stmt_registration->bindParam(":id_event", $fk_id_event);
+        $stmt_registration->bindParam(":id_user", $this->id_user);
+        $stmt_registration->bindParam(":type_user", $type_user);
+        $registrationSuccess = $stmt_registration->execute();
+
+        return $categorySuccess && $eventSuccess && $registrationSuccess ? true : false;
     }
 
     public function deleteEvent($id_event)

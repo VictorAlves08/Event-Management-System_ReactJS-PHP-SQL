@@ -80,7 +80,7 @@ class User
     $stmt->bindParam(':password', $this->password);
     $success = $stmt->execute();
 
-    return $success ? true : false;
+    return $success ? $this->conn->lastInsertId() : false;
   }
 
   public function putUserEdit()

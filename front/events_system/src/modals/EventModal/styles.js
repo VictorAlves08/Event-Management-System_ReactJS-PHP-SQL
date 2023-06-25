@@ -110,6 +110,27 @@ export const ModalBody = styled.div`
     .body-bottom-btns{
       width: 25%;
       height: 100%;
+
+      button{
+      border: none;
+      border-radius: 4px;
+      margin-top: 4rem;
+      padding: 6px 12px;
+      background-color: #2b9348;
+
+      font-size: 16;
+      color: #fff;
+      cursor: pointer;
+
+      height: 50px;
+
+      &:hover{
+        background-color: #55a630;
+        border: 1px solid #000;
+      }
+    }
+
+
     }
   }
 

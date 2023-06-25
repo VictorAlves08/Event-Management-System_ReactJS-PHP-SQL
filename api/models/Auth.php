@@ -51,8 +51,8 @@ class Auth
     {
         $query = "SELECT * FROM users WHERE email = :email AND password = :password";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':email', $email);
-        $stmt->bindParam(':password', $password);
+        $stmt->bindParam(':email', $this->email);
+        $stmt->bindParam(':password', $this->password);
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
