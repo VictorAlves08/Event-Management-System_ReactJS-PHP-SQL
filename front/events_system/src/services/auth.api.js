@@ -16,5 +16,3 @@ export const postCreateUser = async (userData) => {
   });
   return response;
 };
-
-

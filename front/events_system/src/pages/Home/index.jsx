@@ -44,83 +44,84 @@ export const Home = () => {
     setIsModalProfileOpen(!isModalProfileOpen)
   };
 
-  useEffect(() =>{
-   getAllEvents()
-    .then((events) =>{
-      setEventData(events.data);
-    })
+  useEffect(() => {
+    getAllEvents()
+      .then((events) => {
+        setEventData(events.data);
+      })
   }, []);
 
-  useEffect(() =>{
+  useEffect(() => {
     getAllEvents()
-     .then((events) =>{
-       setEventData(events.data);
-     })
-   }, [isModalCreateEventOpen]);
+      .then((events) => {
+        setEventData(events.data);
+      })
+  }, [isModalCreateEventOpen]);
 
   return (
     <>
-    {isModalEventOpen &&
-      <EventModal handleIsModalCreateEventOpen={handleIsModalCreateEventOpen} isModalEventOpen={isModalEventOpen}  onClose={handleIsModalEventOpen} data={eventDataModal} isLoggedIn={isLoggedIn} />
-    }
+      {isModalEventOpen &&
+        <EventModal handleIsModalCreateEventOpen={handleIsModalCreateEventOpen} isModalEventOpen={isModalEventOpen} onClose={handleIsModalEventOpen} data={eventDataModal} isLoggedIn={isLoggedIn} />
+      }
 
-    {isModalCreateEventOpen &&
-      <EventCreateModal eventDataModal={eventDataModal} isLoggedIn={isLoggedIn} isModalCreateEventOpen={isModalCreateEventOpen} onClose={handleIsModalCreateEventOpen} />
-    }
+      {isModalCreateEventOpen &&
+        <EventCreateModal eventDataModal={eventDataModal} isLoggedIn={isLoggedIn} isModalCreateEventOpen={isModalCreateEventOpen} onClose={handleIsModalCreateEventOpen} />
+      }
 
-    {isModalProfileOpen &&
-      <ProfileModal isModalProfileOpen={isModalProfileOpen} onClose={handleIsModalProfileOpen} />
-    }
+      {isModalProfileOpen &&
+        <ProfileModal isModalProfileOpen={isModalProfileOpen} onClose={handleIsModalProfileOpen} />
+      }
 
-    <Styled.Container>
-      <Styled.Header>
-        <h2>Sistema de Cadastro de Eventos</h2>
-        <div>
-          {isLoggedIn ?
-          <div className='userOn'>
-            <text>Olá, {isLoggedIn.name}!</text>
-            <div>
-              <button type="button" onClick={handleIsModalProfileOpen}>Perfil</button>
-              <button type="button" onClick={handleGoToLogout}>Logout</button>
-            </div>
+      <Styled.Container>
+        <Styled.Header>
+          <h2>Sistema de Cadastro de Eventos</h2>
+          <div>
+            {isLoggedIn ?
+              <div className='userOn'>
+                <text>Olá, {isLoggedIn.name}!</text>
+                <div>
+                  <button type="button" onClick={handleIsModalProfileOpen}>Perfil</button>
+                  <button type="button" onClick={handleGoToLogout}>Logout</button>
+                </div>
+              </div>
+              :
+              <>
+                <button type="button" onClick={handleGoToLogin}>Login</button>
+                <button type="button" onClick={handleGoToRegistration}>Registro</button>
+              </>
+            }
           </div>
-            :
-            <>
-              <button type="button" onClick={handleGoToLogin}>Login</button>
-              <button type="button" onClick={handleGoToRegistration}>Registro</button>
-            </>
-          }
-        </div>
-      </Styled.Header>
+        </Styled.Header>
 
-      <Slider />
+        <Slider />
 
-      <Styled.Body>
-        <Styled.FilterContainer>
-          <Filter />
-          {isLoggedIn &&
-            <button type='button' onClick={handleIsModalCreateEventOpen}>CRIAR NOVO EVENTO</button>
-          }
-        </Styled.FilterContainer>
-        <Styled.CardContainer>
-          {eventData?.length > 0 ?
-            eventData.map((data) =>{
-              return(
+        <Styled.Body>
+          <Styled.FilterContainer>
+            <Filter />
+            {isLoggedIn &&
+              <button type='button' onClick={handleIsModalCreateEventOpen}>CRIAR NOVO EVENTO</button>
+            }
+          </Styled.FilterContainer>
+          <Styled.CardContainer>
+            {eventData?.length > 0 ?
+              eventData.map((data) => {
+                return (
                   <Card
                     key={data.id_event}
                     data={data}
                     onClick={() => handleIsModalEventOpen(data)}
-                   />
-              )})
-          :
-            <h3>NENHUM EVENTO ENCONTRADO</h3>
-          }
-        </Styled.CardContainer>
-        <a href='https://github.com/VictorAlves08/Event-Management-System_ReactJS-PHP-SQL' target='_blank'>
-          Victor A. de Oliveira - {date.getFullYear()}
-        </a>
-      </Styled.Body>
-    </Styled.Container>
+                  />
+                )
+              })
+              :
+              <h3>NENHUM EVENTO ENCONTRADO</h3>
+            }
+          </Styled.CardContainer>
+          <a href='https://github.com/VictorAlves08/Event-Management-System_ReactJS-PHP-SQL' target='_blank'>
+            Victor A. de Oliveira - {date.getFullYear()}
+          </a>
+        </Styled.Body>
+      </Styled.Container>
     </>
   );
 }

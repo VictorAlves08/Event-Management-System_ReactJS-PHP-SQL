@@ -5,7 +5,7 @@ import * as Styled from './styles';
 import { useNavigate } from 'react-router-dom';
 import { postLogin } from '../../services/auth.api';
 
-export const Login = () =>{
+export const Login = () => {
   const navigate = useNavigate();
 
   const [userData, setUserData] = useState({
@@ -16,20 +16,20 @@ export const Login = () =>{
   const handleGoToHome = () => navigate('/');
 
   const handleSubmit = () => {
-    if(userData.email && userData.password){
-      postLogin(userData).then((info) =>{
-        if(info.data[0].id_user){
-          const obj = {...info.data[0], isLoggedIn: true}
+    if (userData.email && userData.password) {
+      postLogin(userData).then((info) => {
+        if (info.data[0].id_user) {
+          const obj = { ...info.data[0], isLoggedIn: true }
           sessionStorage.setItem('isUserLoggedIn', JSON.stringify(obj));
           handleGoToHome();
         }
-      }).catch(() =>{
-          alert('Erro ao fazer Login! Verifique seu email e senha!')
+      }).catch(() => {
+        alert('Erro ao fazer Login! Verifique seu email e senha!')
       })
     }
   };
 
-  return(
+  return (
     <Styled.Container>
       <div className="body">
         <h1>Login</h1>
@@ -41,13 +41,13 @@ export const Login = () =>{
             type='email'
             placeholder='Digite seu email...'
             value={userData.email}
-            onChange={(e) => setUserData({...userData, email: e.target.value})}
+            onChange={(e) => setUserData({ ...userData, email: e.target.value })}
           />
           <Styled.Input
             type='password'
             placeholder='Digite sua senha...'
             value={userData.password}
-            onChange={(e) => setUserData({...userData, password: e.target.value})}
+            onChange={(e) => setUserData({ ...userData, password: e.target.value })}
           />
         </Styled.Form>
 
