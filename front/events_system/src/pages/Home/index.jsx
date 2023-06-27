@@ -69,7 +69,7 @@ export const Home = () => {
         setEventData(events.data);
         setEventDataFiltered(events.data);
       })
-  }, [isModalCreateEventOpen, isModalEventOpen]);
+  }, [isModalCreateEventOpen, isModalEventOpen, isModalProfileOpen]);
 
   return (
     <>
@@ -96,6 +96,7 @@ export const Home = () => {
         <ProfileModal
           isModalProfileOpen={isModalProfileOpen}
           onClose={handleIsModalProfileOpen}
+          isLoggedIn={isLoggedIn}
         />
       }
 

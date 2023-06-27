@@ -61,15 +61,51 @@ class User
 
   public function getUser($id_user)
   {
-    $query = "SELECT * FROM users WHERE id_user = :id_user
-                JOIN registrations ON user.id_user = registrations.id_user
-                JOIN events ON registrations.id_event = events.id_event";
+    $query = "SELECT users.id_user, users.name, users.email, users.password,
+            registrations.id_registration, registrations.payment_status,
+            events.id_event, events.title, events.description,
+            events.dateTime, events.location,
+            events.price, events.image_url, registrations.type_user
+            FROM users
+            JOIN registrations ON users.id_user = registrations.fk_id_user
+            JOIN events ON registrations.fk_id_event = events.id_event
+            WHERE users.id_user = :id_user";
     $stmt = $this->conn->prepare($query);
     $stmt->bindParam(':id_user', $id_user);
     $stmt->execute();
 
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $user = array(
+      "id_user" => $result[0]['id_user'],
+      "name" => $result[0]['name'],
+      "email" => $result[0]['email'],
+      "password" => $result[0]['password'],
+      "eventsParticipant" => array(),
+      "eventsOrganizer" => array()
+    );
+
+    foreach ($result as $row) {
+      $event = array(
+        "id_event" => $row['id_event'],
+        "title" => $row['title'],
+        "description" => $row['description'],
+        "dateTime" => $row['dateTime'],
+        "location" => $row['location'],
+        "price" => $row['price'],
+        "image_url" => $row['image_url']
+      );
+
+      if ($row['type_user'] === "organizer") {
+        $user['eventsOrganizer'][] = $event;
+      } else {
+        $user['eventsParticipant'][] = $event;
+      }
+    }
+
+    return $user;
   }
+
 
   public function postUserCreate()
   {
