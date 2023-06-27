@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import * as Styled from './styles';
 
@@ -14,19 +14,32 @@ const imageUrls = [
 ];
 
 export const Slider = () => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const handleNextImage = () => {
-    setCurrentImageIndex(currentImageIndex + 1 > imageUrls.length - 1 ? 0 : currentImageIndex + 1);
+  const goToNextImage = () => {
+    setCurrentIndex((currentIndex + 1) % imageUrls.length);
   };
+
+  const goToPreviousImage = () => {
+    setCurrentIndex(
+      currentIndex === 0 ? imageUrls.length - 1 : currentIndex - 1
+    );
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentIndex((currentIndex + 1) % imageUrls.length);
+    }, 8000);
+    return () => clearInterval(intervalId);
+  }, [currentIndex, imageUrls.length]);
 
   return (
     <Styled.Slider>
-      <ArrowBackIosNewIcon onClick={handleNextImage} fontSize="large" style={{ cursor: 'pointer', color: '#fca311' }} />
+      <ArrowBackIosNewIcon onClick={goToPreviousImage} fontSize="large" style={{ cursor: 'pointer', color: '#fca311' }} />
       <div>
-        <img src={imageUrls[currentImageIndex]} alt="Banner de Eventos" />
+        <img src={imageUrls[currentIndex]} alt="Banner de Eventos" />
       </div>
-      <ArrowForwardIosIcon onClick={handleNextImage} fontSize="large" style={{ cursor: 'pointer', color: '#fca311' }} />
+      <ArrowForwardIosIcon onClick={goToNextImage} fontSize="large" style={{ cursor: 'pointer', color: '#fca311' }} />
     </Styled.Slider>
   )
 }
