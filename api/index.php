@@ -1,7 +1,7 @@
 <?php
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Authorization, Origin');
-header('Access-Control-Allow-Methods:  POST, PUT, GET');
+header('Access-Control-Allow-Methods:  POST, PUT, GET, DELETE');
 
 $path_url = '/Event-Management-System_ReactJS-PHP-SQL/api/index.php';
 

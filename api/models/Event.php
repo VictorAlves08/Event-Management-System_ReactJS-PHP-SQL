@@ -127,7 +127,14 @@ class Event
             $reviewsStmt->bindParam(':event_id', $event['id_event']);
             $reviewsStmt->execute();
             $reviews = $reviewsStmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $averageSum  = 0;
+            foreach ($reviews as $review) {
+                $averageSum  += $review['score'];
+            }
+        
             $event['reviews'] = $reviews;
+            $event['averageScore'] = count($reviews) > 0 ? round($averageSum  / count($reviews)) : 0;
         }
 
         return $events;
@@ -162,7 +169,14 @@ class Event
             $reviewsStmt->bindParam(':event_id', $id_event);
             $reviewsStmt->execute();
             $reviews = $reviewsStmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $averageSum  = 0;
+            foreach ($reviews as $review) {
+                $averageSum  += $review['score'];
+            }
+        
             $event['reviews'] = $reviews;
+            $event['averageScore'] = count($reviews) > 0 ? round($averageSum  / count($reviews)) : 0;
         }
 
         return $event;
@@ -203,11 +217,22 @@ class Event
 
     public function deleteEvent($id_event)
     {
+
+        $query_registration = "DELETE FROM registrations WHERE fk_id_event = :id_event";
+        $stmt_registration = $this->conn->prepare($query_registration);
+        $stmt_registration->bindParam(":id_event", $id_event);
+        $registrationSuccess = $stmt_registration->execute();
+
         $query_category_id = "SELECT fk_id_category FROM events WHERE id_event = :id_event";
         $stmt_category_id = $this->conn->prepare($query_category_id);
         $stmt_category_id->bindParam(":id_event", $id_event);
         $stmt_category_id->execute();
         $category_id = $stmt_category_id->fetchColumn();
+        
+        $query_review = "DELETE FROM reviews WHERE fk_id_event = :id_event";
+        $stmt_review = $this->conn->prepare($query_review);
+        $stmt_review->bindParam(":id_event", $id_event);
+        $reviewSuccess = $stmt_review->execute();
 
         $query_event = "DELETE FROM events WHERE id_event = :id_event";
         $stmt_event = $this->conn->prepare($query_event);
@@ -218,16 +243,6 @@ class Event
         $stmt_category = $this->conn->prepare($query_category);
         $stmt_category->bindParam(":id_category", $category_id);
         $categorySuccess = $stmt_category->execute();
-
-        $query_review = "DELETE FROM reviews WHERE fk_id_event = :id_event";
-        $stmt_review = $this->conn->prepare($query_review);
-        $stmt_review->bindParam(":id_event", $id_event);
-        $reviewSuccess = $stmt_review->execute();
-
-        $query_registration = "DELETE FROM registrations WHERE fk_id_event = :id_event";
-        $stmt_registration = $this->conn->prepare($query_registration);
-        $stmt_registration->bindParam(":id_event", $id_event);
-        $registrationSuccess = $stmt_registration->execute();
 
         return $registrationSuccess && $eventSuccess && $categorySuccess && $reviewSuccess ? true : false;
     }

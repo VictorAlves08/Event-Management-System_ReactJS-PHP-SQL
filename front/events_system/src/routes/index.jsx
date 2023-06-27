@@ -9,7 +9,7 @@ export const RouterApp = () => (
       <Route exact path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/registration" element={<Registration />} />
-      <Route path='*' element={<ErrorPage />} />
+      <Route path="*" element={<ErrorPage />} />
     </Routes>
   </Router>
 );

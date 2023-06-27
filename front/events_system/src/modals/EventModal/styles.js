@@ -70,7 +70,7 @@ export const ModalBody = styled.div`
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      width: 30%;
+      width: 280px;
       height: 100%;
     }
   }
@@ -112,22 +112,22 @@ export const ModalBody = styled.div`
       height: 100%;
 
       button{
-      border: none;
-      border-radius: 4px;
-      margin-top: 4rem;
-      padding: 6px 12px;
-      background-color: #2b9348;
+        border: none;
+        border-radius: 4px;
+        margin-top: 4rem;
+        padding: 6px 12px;
 
-      font-size: 16;
-      color: #fff;
-      cursor: pointer;
+        font-size: 16;
+        color: #fff;
+        cursor: pointer;
 
-      height: 50px;
+        height: 50px;
+        margin-left: 8px;
 
-      &:hover{
-        background-color: #55a630;
-        border: 1px solid #000;
-      }
+        &:hover{
+          color: #000;
+          border: 0px solid #000;
+        }
     }
 
 

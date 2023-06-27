@@ -6,10 +6,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import { postCreateEvent, putUpdateEvent } from '../../services/event.api';
 
 import { Loader } from '../../components/index';
-import { formatDate, formatStars } from '../../utils/index.js';
 
-export const EventCreateModal = ({ onClose, isModalCreateEventOpen, isLoggedIn, eventDataModal }) => {
+export const EventCreateModal = ({ onClose, isModalCreateEventOpen, isLoggedIn, eventDataModal, onCloseEventModal }) => {
   if (!isModalCreateEventOpen) return null;
+
   const isEditEvent = eventDataModal.id_event ? true : false;
   const [isLoading, setIsLoading] = useState(false);
 
@@ -44,6 +44,7 @@ export const EventCreateModal = ({ onClose, isModalCreateEventOpen, isLoggedIn, 
       request.then((info) => {
         if (info.status === 200 || info.status === 201) {
           onClose();
+          onCloseEventModal();
         }
       }).catch(() => {
         const errorMessage = isEditEvent ? 'Ocorreu um erro ao editar o evento!' : 'Ocorreu um erro ao criar um novo evento!';
@@ -71,14 +72,16 @@ export const EventCreateModal = ({ onClose, isModalCreateEventOpen, isLoggedIn, 
               <div>
                 <label>Titulo</label>
                 <input
+                  required
                   type="text"
                   autoFocus
                   value={eventData.title}
                   onChange={(e) => setEventData({ ...eventData, title: e.target.value })}
                 />
 
-                <label>Descrição - <a>Gerar pelo Chat-GPT</a></label>
+                <label>Descrição</label>
                 <textarea
+                  required
                   type="text"
                   value={eventData.description}
                   onChange={(e) => setEventData({ ...eventData, description: e.target.value })}
@@ -86,6 +89,7 @@ export const EventCreateModal = ({ onClose, isModalCreateEventOpen, isLoggedIn, 
 
                 <label>Data</label>
                 <input
+                  required
                   type="date"
                   value={eventData.date}
                   onChange={(e) => setEventData({ ...eventData, date: e.target.value })}
@@ -93,6 +97,7 @@ export const EventCreateModal = ({ onClose, isModalCreateEventOpen, isLoggedIn, 
 
                 <label>Hora</label>
                 <input
+                  required
                   id="hora-cons" type="time" name="hora-cons" step="2"
                   value={eventData.time}
                   onChange={(e) => setEventData({ ...eventData, time: e.target.value })}
@@ -102,6 +107,7 @@ export const EventCreateModal = ({ onClose, isModalCreateEventOpen, isLoggedIn, 
               <div>
                 <label>Local</label>
                 <input
+                  required
                   type="text"
                   value={eventData.location}
                   onChange={(e) => setEventData({ ...eventData, location: e.target.value })}
@@ -109,6 +115,7 @@ export const EventCreateModal = ({ onClose, isModalCreateEventOpen, isLoggedIn, 
 
                 <label>Preço (R$)</label>
                 <input
+                  required
                   type="number"
                   min={0}
                   value={eventData.price}
@@ -117,6 +124,7 @@ export const EventCreateModal = ({ onClose, isModalCreateEventOpen, isLoggedIn, 
 
                 <label>Categoria do Evento</label>
                 <input
+                  required
                   type="text"
                   value={eventData.type}
                   onChange={(e) => setEventData({ ...eventData, type: e.target.value })}
@@ -128,6 +136,7 @@ export const EventCreateModal = ({ onClose, isModalCreateEventOpen, isLoggedIn, 
                 <img width='180' height={120} src={eventData.image_url || 'https://events.liveto.io/_next/static/media/default_event.82c17d7a.png'} alt="imagem" />
                 <label>Link da Imagem</label>
                 <input
+                  required
                   type="url"
                   value={eventData.image_url}
                   onChange={(e) => setEventData({ ...eventData, image_url: e.target.value })}

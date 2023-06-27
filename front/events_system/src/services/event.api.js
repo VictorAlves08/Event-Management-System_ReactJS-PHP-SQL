@@ -33,3 +33,9 @@ export const putUpdateEvent = async (eventData) => {
   return response;
 };
 
+export const deleteEvent = async (id_event) => {
+  const response = await api.post("/deleteEvent", {
+    id_event: id_event
+  });
+  return response;
+};

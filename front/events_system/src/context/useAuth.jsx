@@ -5,7 +5,7 @@ export const useAuth = () => {
 
   useEffect(() => {
     const checkAuthentication = () => {
-      const userData = sessionStorage.getItem('isUserLoggedIn');
+      const userData = localStorage.getItem('isUserLoggedIn');
       if (userData) {
         const parsedData = JSON.parse(userData);
         setIsLoggedInData(parsedData);

@@ -6,7 +6,7 @@ import * as Styled from './styles';
 
 export const Card = ({ data, onClick }) => {
   const date = formatDate(data?.dateTime);
-  const stars = formatStars(5);
+  const stars = formatStars(data?.averageScore);
 
   return (
     <Styled.Card onClick={onClick}>

@@ -20,7 +20,7 @@ export const Login = () => {
       postLogin(userData).then((info) => {
         if (info.data[0].id_user) {
           const obj = { ...info.data[0], isLoggedIn: true }
-          sessionStorage.setItem('isUserLoggedIn', JSON.stringify(obj));
+          localStorage.setItem('isUserLoggedIn', JSON.stringify(obj));
           handleGoToHome();
         }
       }).catch(() => {

@@ -12,22 +12,33 @@ import { useNavigate } from 'react-router-dom';
 
 export const Home = () => {
   const date = new Date();
-
   const navigate = useNavigate();
   const isLoggedIn = useAuth();
 
-  const [eventData, setEventData] = useState([]);
   const [eventDataModal, setEventDataModal] = useState([]);
+  const [eventData, setEventData] = useState([]);
+  const [eventDataFiltered, setEventDataFiltered] = useState([])
+  const [filter, setFilter] = useState({ eventName: '', eventCategory: '', eventScore: 6 });
 
   const [isModalEventOpen, setIsModalEventOpen] = useState(false);
   const [isModalCreateEventOpen, setIsModalCreateEventOpen] = useState(false);
   const [isModalProfileOpen, setIsModalProfileOpen] = useState(false);
 
+  const handleFilter = (newFilter) => {
+    setFilter(newFilter);
+    const filteredData = eventData.filter((event) => {
+      const eventNameMatch = newFilter.eventName === '' || event.title.toLowerCase().includes(newFilter.eventName.toLowerCase());
+      const eventCategoryMatch = newFilter.eventCategory === '' || event.type.toLowerCase().includes(newFilter.eventCategory.toLowerCase());
+      const eventScoreMatch = newFilter.eventScore === 6 || event.averageScore === newFilter.eventScore;
+      return eventNameMatch && eventCategoryMatch && eventScoreMatch;
+    });
+    setEventDataFiltered(filteredData);
+  };
+
   const handleGoToLogin = () => navigate('/login');
   const handleGoToRegistration = () => navigate('/registration');
-
   const handleGoToLogout = () => {
-    sessionStorage.removeItem('isUserLoggedIn');
+    localStorage.removeItem('isUserLoggedIn');
     navigate('/login')
   };
 
@@ -48,6 +59,7 @@ export const Home = () => {
     getAllEvents()
       .then((events) => {
         setEventData(events.data);
+        setEventDataFiltered(events.data);
       })
   }, []);
 
@@ -55,21 +67,36 @@ export const Home = () => {
     getAllEvents()
       .then((events) => {
         setEventData(events.data);
+        setEventDataFiltered(events.data);
       })
-  }, [isModalCreateEventOpen]);
+  }, [isModalCreateEventOpen, isModalEventOpen]);
 
   return (
     <>
       {isModalEventOpen &&
-        <EventModal handleIsModalCreateEventOpen={handleIsModalCreateEventOpen} isModalEventOpen={isModalEventOpen} onClose={handleIsModalEventOpen} data={eventDataModal} isLoggedIn={isLoggedIn} />
+        <EventModal
+          handleIsModalCreateEventOpen={handleIsModalCreateEventOpen}
+          isModalEventOpen={isModalEventOpen}
+          onClose={handleIsModalEventOpen}
+          data={eventDataModal}
+          isLoggedIn={isLoggedIn} />
       }
 
       {isModalCreateEventOpen &&
-        <EventCreateModal eventDataModal={eventDataModal} isLoggedIn={isLoggedIn} isModalCreateEventOpen={isModalCreateEventOpen} onClose={handleIsModalCreateEventOpen} />
+        <EventCreateModal
+          eventDataModal={eventDataModal}
+          isLoggedIn={isLoggedIn}
+          isModalCreateEventOpen={isModalCreateEventOpen}
+          onClose={handleIsModalCreateEventOpen}
+          onCloseEventModal={handleIsModalEventOpen}
+        />
       }
 
       {isModalProfileOpen &&
-        <ProfileModal isModalProfileOpen={isModalProfileOpen} onClose={handleIsModalProfileOpen} />
+        <ProfileModal
+          isModalProfileOpen={isModalProfileOpen}
+          onClose={handleIsModalProfileOpen}
+        />
       }
 
       <Styled.Container>
@@ -97,14 +124,14 @@ export const Home = () => {
 
         <Styled.Body>
           <Styled.FilterContainer>
-            <Filter />
+            <Filter handleFilter={handleFilter} filter={filter} />
             {isLoggedIn &&
               <button type='button' onClick={handleIsModalCreateEventOpen}>CRIAR NOVO EVENTO</button>
             }
           </Styled.FilterContainer>
           <Styled.CardContainer>
-            {eventData?.length > 0 ?
-              eventData.map((data) => {
+            {eventDataFiltered?.length > 0 ?
+              eventDataFiltered.map((data) => {
                 return (
                   <Card
                     key={data.id_event}

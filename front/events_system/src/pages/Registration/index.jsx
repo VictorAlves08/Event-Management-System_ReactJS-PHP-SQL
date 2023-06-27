@@ -5,7 +5,6 @@ import * as Styled from './styles';
 import { useNavigate } from 'react-router-dom';
 import { postCreateUser } from '../../services/auth.api';
 
-const messageOK = "Usuario criado com sucesso";
 export const Registration = () => {
   const navigate = useNavigate();
 
@@ -23,7 +22,7 @@ export const Registration = () => {
         console.log(info)
         if (info.data) {
           const obj = { ...userData, isLoggedIn: true, id_user: info.data }
-          sessionStorage.setItem('isUserLoggedIn', JSON.stringify(obj));
+          localStorage.setItem('isUserLoggedIn', JSON.stringify(obj));
           handleGoToHome();
         }
       }).catch(() => {

@@ -46,10 +46,9 @@ class EventController
 
     public function deleteEvent()
     {
-        $requestBody = file_get_contents('php://input');
-        $requestData = json_decode($requestBody, true);
+        $data = json_decode(file_get_contents('php://input'), true);
 
-        $eventId = $requestData['id_event'];
+        $eventId = $data['id_event'];
         $result = $this->event->deleteEvent($eventId);
 
         if ($result) {
