@@ -65,19 +65,19 @@ export const Input = styled.input`
 
 export const Button = styled.button`
   cursor: pointer;
+  font-size: 16;
 
   border: none;
-  border-radius: 8px;
-  box-shadow: 2px 2px 7px #38d39f70;
+  border-radius: 4px;
 
   background: #55a630;
   color: #fff;
 
   width: 120px;
-  height: 30px;
+  height: 50px;
 
   &:hover{
     background: #007f5f;
-    box-shadow: none;
+    border: 0px solid #000;
   }
 `;
