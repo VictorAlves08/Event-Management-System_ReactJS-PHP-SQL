@@ -134,6 +134,7 @@ export const ModalBody = styled.div`
         height: 100%;
         border: 1px solid black;
         resize: none;
+        padding: 1px;
       }
 
       select{

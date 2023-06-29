@@ -22,7 +22,7 @@ export const Registration = () => {
         console.log(info)
         if (info.data) {
           const obj = { ...userData, isLoggedIn: true, id_user: info.data }
-          localStorage.setItem('isUserLoggedIn', JSON.stringify(obj));
+          sessionStorage.setItem('isUserLoggedIn', JSON.stringify(obj));
           handleGoToHome();
         }
       }).catch(() => {

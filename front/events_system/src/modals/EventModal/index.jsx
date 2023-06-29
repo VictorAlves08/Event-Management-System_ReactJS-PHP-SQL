@@ -82,7 +82,7 @@ export const EventModal = ({ onClose, isModalEventOpen, data, handleIsModalCreat
       }
     })
   }
-  console.log(isLoggedIn?.id_user, data)
+
   return (
     <Styled.ModalWrapper>
       <Styled.ModalContent>
@@ -112,9 +112,11 @@ export const EventModal = ({ onClose, isModalEventOpen, data, handleIsModalCreat
                   <p title={userOrganizer?.email} >{userOrganizer?.email}</p>
 
                   <Styled.InfoTitle>Participantes ({participants?.length || 0})</Styled.InfoTitle>
-                  {participants?.map((participant) => (
-                    <p key={participant.id_user} title={participant.name}>{participant.name}</p>
-                  ))}
+                  {isLoggedIn &&
+                    participants?.map((participant) => (
+                      <p key={participant.id_user} title={participant.name}>{participant.name}</p>
+                    ))
+                  }
                 </div>
               </div>
 
@@ -163,7 +165,7 @@ export const EventModal = ({ onClose, isModalEventOpen, data, handleIsModalCreat
                     <div>
                       {isLoggedIn?.id_user == userOrganizer?.id_user && (
                         <>
-                          <button type="button" style={{ backgroundColor: '#55a630' }} onClick={handleIsModalCreateEventOpen}>Editar Evento</button>
+                          <button type="button" style={{ backgroundColor: '#55a630', marginRight: 5 }} onClick={handleIsModalCreateEventOpen}>Editar Evento</button>
                           <button type="button" style={{ backgroundColor: '#dd2808' }} onClick={handleDeleteEvent}>Deletar Evento</button>
                         </>
                       )}

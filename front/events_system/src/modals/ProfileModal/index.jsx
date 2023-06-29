@@ -29,7 +29,7 @@ export const ProfileModal = ({ onClose, isModalProfileOpen, isLoggedIn }) => {
             id_user: profileData.id_user,
             isLoggedIn: true
           }
-          localStorage.setItem('isUserLoggedIn', JSON.stringify(obj));
+          sessionStorage.setItem('isUserLoggedIn', JSON.stringify(obj));
           alert('Usuário editado com sucesso!');
         }
       })

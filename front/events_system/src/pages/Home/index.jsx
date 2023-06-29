@@ -38,7 +38,7 @@ export const Home = () => {
   const handleGoToLogin = () => navigate('/login');
   const handleGoToRegistration = () => navigate('/registration');
   const handleGoToLogout = () => {
-    localStorage.removeItem('isUserLoggedIn');
+    sessionStorage.removeItem('isUserLoggedIn');
     navigate('/login')
   };
 

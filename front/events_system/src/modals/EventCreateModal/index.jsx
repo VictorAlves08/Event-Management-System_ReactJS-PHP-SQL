@@ -13,11 +13,14 @@ export const EventCreateModal = ({ onClose, isModalCreateEventOpen, isLoggedIn, 
   const isEditEvent = eventDataModal?.id_event ? true : false;
   const [isLoading, setIsLoading] = useState(false);
 
+  let dateTime = eventDataModal?.dateTime;
+  const [date, time] = dateTime?.split(' ');
+
   const [eventData, setEventData] = useState({
     title: eventDataModal?.title || "",
     description: eventDataModal?.description || "",
-    date: null,
-    time: null,
+    date: date || null,
+    time: time || null,
     location: eventDataModal?.location || "",
     price: eventDataModal?.price || "",
     image_url: eventDataModal?.image_url || "",

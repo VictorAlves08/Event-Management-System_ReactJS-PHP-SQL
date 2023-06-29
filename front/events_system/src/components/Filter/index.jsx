@@ -1,5 +1,4 @@
 import React from 'react';
-
 import * as Styled from './styles';
 
 export const Filter = ({ handleFilter, filter }) => {
@@ -22,7 +21,7 @@ export const Filter = ({ handleFilter, filter }) => {
       />
 
       <Styled.Select name="select" value={eventScore} onChange={(e) => handleFilter({ ...filter, eventScore: parseInt(e.target.value) })}>
-        <option value="6" default >Todos</option>
+        <option value="6" default>Todos</option>
         <option value="0">Sem Review</option>
         <option value="1">⭐</option>
         <option value="2">⭐⭐</option>

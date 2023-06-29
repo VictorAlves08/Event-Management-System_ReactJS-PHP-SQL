@@ -5,7 +5,6 @@ export const getUsers = async (id_user) => {
   return response;
 }
 
-
 export const putUserEdit = async (userData) => {
   const response = await api.put("/editUser", {
     id_user: userData.id_user,
