@@ -132,7 +132,7 @@ class Event
             foreach ($reviews as $review) {
                 $averageSum  += $review['score'];
             }
-        
+
             $event['reviews'] = $reviews;
             $event['averageScore'] = count($reviews) > 0 ? round($averageSum  / count($reviews)) : 0;
         }
@@ -174,7 +174,7 @@ class Event
             foreach ($reviews as $review) {
                 $averageSum  += $review['score'];
             }
-        
+
             $event['reviews'] = $reviews;
             $event['averageScore'] = count($reviews) > 0 ? round($averageSum  / count($reviews)) : 0;
         }
@@ -228,7 +228,7 @@ class Event
         $stmt_category_id->bindParam(":id_event", $id_event);
         $stmt_category_id->execute();
         $category_id = $stmt_category_id->fetchColumn();
-        
+
         $query_review = "DELETE FROM reviews WHERE fk_id_event = :id_event";
         $stmt_review = $this->conn->prepare($query_review);
         $stmt_review->bindParam(":id_event", $id_event);

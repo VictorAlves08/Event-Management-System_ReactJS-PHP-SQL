@@ -61,7 +61,6 @@ class User
 
   public function getUser($id_user)
   {
-    // Verificar se existem registros nas tabelas registrations e events
     $query = "SELECT COUNT(*) as countRegistrations FROM registrations WHERE fk_id_user = :id_user";
     $stmt = $this->conn->prepare($query);
     $stmt->bindParam(':id_user', $id_user);
@@ -74,7 +73,6 @@ class User
     $stmt->execute();
     $eventsCount = $stmt->fetch(PDO::FETCH_ASSOC)['countEvents'];
 
-    // Verificar se existem registros nas tabelas registrations e events
     if ($registrationsCount == 0 && $eventsCount == 0) {
       $query = "SELECT id_user, name, email, password FROM users WHERE id_user = :id_user";
       $stmt = $this->conn->prepare($query);
@@ -92,7 +90,6 @@ class User
         "eventsOrganizer" => array()
       );
     } else {
-      // Consulta original
       $query = "SELECT users.id_user, users.name, users.email, users.password,
             registrations.id_registration, registrations.payment_status,
             events.id_event, events.title, events.description,
