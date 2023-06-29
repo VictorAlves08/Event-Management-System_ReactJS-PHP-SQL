@@ -9,9 +9,9 @@ export const Registration = () => {
   const navigate = useNavigate();
 
   const [userData, setUserData] = useState({
-    name: null,
-    email: null,
-    password: null
+    name: "",
+    email: "",
+    password: ""
   })
 
   const handleGoToHome = () => navigate('/');

@@ -85,8 +85,9 @@ export const TableContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 16px;
 
-  div{
+  .table-container{
     width: 100%;
     height: 100%;
 
@@ -94,6 +95,19 @@ export const TableContainer = styled.div`
     flex-direction: column;
     align-items: center;
 
+    overflow: auto;
   }
+`;
 
+export const DataContainer = styled.div`
+  width: 100%;
+  height: 30%;
+
+  padding: 10px;
+  border: 1px solid #000;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
 `;

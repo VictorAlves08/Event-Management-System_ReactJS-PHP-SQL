@@ -97,6 +97,18 @@ export const ModalBody = styled.div`
 
       overflow: auto;
 
+      .body-bottom-score{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+
+        a{
+          color: red;
+          cursor: pointer;
+        }
+      }
+
       p{
         border-bottom: 1px solid black;
         padding-bottom: 5px;
@@ -111,10 +123,26 @@ export const ModalBody = styled.div`
       width: 25%;
       height: 100%;
 
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      gap:8px;
+
+      textarea{
+        width: 100%;
+        height: 100%;
+        border: 1px solid black;
+        resize: none;
+      }
+
+      select{
+        width: 100%;
+      }
+
       button{
         border: none;
         border-radius: 4px;
-        margin-top: 4rem;
         padding: 6px 12px;
 
         font-size: 16;
@@ -122,7 +150,6 @@ export const ModalBody = styled.div`
         cursor: pointer;
 
         height: 50px;
-        margin-left: 8px;
 
         &:hover{
           color: #000;
@@ -130,6 +157,13 @@ export const ModalBody = styled.div`
         }
     }
 
+    div{
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
 
     }
   }

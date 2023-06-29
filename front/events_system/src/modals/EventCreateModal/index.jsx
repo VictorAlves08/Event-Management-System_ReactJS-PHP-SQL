@@ -10,20 +10,20 @@ import { Loader } from '../../components/index';
 export const EventCreateModal = ({ onClose, isModalCreateEventOpen, isLoggedIn, eventDataModal, onCloseEventModal }) => {
   if (!isModalCreateEventOpen) return null;
 
-  const isEditEvent = eventDataModal.id_event ? true : false;
+  const isEditEvent = eventDataModal?.id_event ? true : false;
   const [isLoading, setIsLoading] = useState(false);
 
   const [eventData, setEventData] = useState({
-    title: eventDataModal.title || null,
-    description: eventDataModal.description || null,
-    date: eventDataModal.dateTime || null,
-    time: eventDataModal.dateTime || null,
-    location: eventDataModal.location || null,
-    price: eventDataModal.price || null,
-    image_url: eventDataModal.image_url || null,
-    type: eventDataModal.type || null,
-    id_user: isLoggedIn.id_user,
-    id_event: eventDataModal.id_event || null,
+    title: eventDataModal?.title || "",
+    description: eventDataModal?.description || "",
+    date: null,
+    time: null,
+    location: eventDataModal?.location || "",
+    price: eventDataModal?.price || "",
+    image_url: eventDataModal?.image_url || "",
+    type: eventDataModal?.type || "",
+    id_user: isLoggedIn?.id_user || null,
+    id_event: eventDataModal?.id_event || null,
   })
 
   const handleSubmit = () => {

@@ -9,8 +9,8 @@ export const Login = () => {
   const navigate = useNavigate();
 
   const [userData, setUserData] = useState({
-    email: null,
-    password: null
+    email: "",
+    password: ""
   })
 
   const handleGoToHome = () => navigate('/');

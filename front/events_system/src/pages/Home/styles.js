@@ -46,7 +46,7 @@ export const Header = styled.div`
       &:hover{
         background-color: #fff;
         color: #000;
-        border: 1px solid #000;
+        border: 0px solid #000;
       }
     }
   }
@@ -87,7 +87,7 @@ export const FilterContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
 
   width: 100%;
   padding: 20px;
@@ -123,6 +123,4 @@ export const CardContainer = styled.div`
 
   padding: 20px;
   gap: 20px;
-
-  margin-bottom: 100px;
 `;

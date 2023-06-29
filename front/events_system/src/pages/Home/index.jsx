@@ -73,13 +73,14 @@ export const Home = () => {
 
   return (
     <>
-      {isModalEventOpen &&
+      {isModalEventOpen && eventDataModal &&
         <EventModal
           handleIsModalCreateEventOpen={handleIsModalCreateEventOpen}
           isModalEventOpen={isModalEventOpen}
           onClose={handleIsModalEventOpen}
           data={eventDataModal}
-          isLoggedIn={isLoggedIn} />
+          isLoggedIn={isLoggedIn}
+        />
       }
 
       {isModalCreateEventOpen &&

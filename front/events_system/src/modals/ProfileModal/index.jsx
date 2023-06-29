@@ -3,19 +3,38 @@ import React, { useEffect, useState } from 'react';
 import * as Styled from './styles';
 import CloseIcon from '@mui/icons-material/Close';
 
-import { getUsers } from '../../services/user.api';
+import { getUsers, putUserEdit } from '../../services/user.api';
+import { formatDate } from '../../utils/index.js';
 
 export const ProfileModal = ({ onClose, isModalProfileOpen, isLoggedIn }) => {
   if (!isModalProfileOpen) return null;
 
   const [profileData, setProfileData] = useState({
-    name: null,
-    email: null,
-    password: null,
+    name: "",
+    email: "",
+    password: "",
     id_user: null,
     eventsOrganizer: [],
     eventsParticipant: []
   });
+
+  const handleEditUser = () => {
+    putUserEdit(profileData).then(() => {
+      putUserEdit(profileData).then((info) => {
+        if (info.status === 200) {
+          const obj = {
+            name: profileData.name,
+            email: profileData.email,
+            password: profileData.password,
+            id_user: profileData.id_user,
+            isLoggedIn: true
+          }
+          localStorage.setItem('isUserLoggedIn', JSON.stringify(obj));
+          alert('Usuário editado com sucesso!');
+        }
+      })
+    })
+  };
 
   useEffect(() => {
     getUsers(isLoggedIn?.id_user).then((info) => {
@@ -32,7 +51,7 @@ export const ProfileModal = ({ onClose, isModalProfileOpen, isLoggedIn }) => {
       }
     })
   }, [])
-  console.log(profileData)
+
   return (
     <Styled.ModalWrapper>
       <Styled.ModalContent>
@@ -72,26 +91,32 @@ export const ProfileModal = ({ onClose, isModalProfileOpen, isLoggedIn }) => {
               />
             </div>
 
-            <button>Salvar</button>
+            <button type='button' onClick={handleEditUser} >Salvar</button>
           </Styled.InfoContainer>
 
           <Styled.TableContainer>
-            <div>
-              <>
-                <h3>Eventos que estou participando</h3>
-                {profileData?.eventsParticipant.map((event) => (
-                  <p key={event.id_event}>{event.title}</p>
-                ))}
-              </>
+            <div className="table-container">
+              <h3>Eventos que estou participando</h3>
+              {profileData?.eventsParticipant?.map((event) => (
+                <Styled.DataContainer key={event.id_event}>
+                  <text>{event.title}</text>
+                  <text>{formatDate(event?.dateTime)}</text>
+                  <text>{event.location}</text>
+                </Styled.DataContainer>
+              ))}
             </div>
 
-            <div>
-              <>
-                <h3>Eventos que estou organizando</h3>
-                {profileData?.eventsOrganizer.map((event) => (
-                  <p key={event.id_event}>{event.title}</p>
-                ))}
-              </>
+            <div className="table-container">
+              <h3>Eventos que estou organizando</h3>
+              {profileData?.eventsOrganizer?.map((event) => (
+                <>
+                  <Styled.DataContainer key={event.id_event}>
+                    <text>{event.title}</text>
+                    <text>{formatDate(event?.dateTime)}</text>
+                    <text>{event.location}</text>
+                  </Styled.DataContainer>
+                </>
+              ))}
             </div>
           </Styled.TableContainer>
         </Styled.ModalBody>
